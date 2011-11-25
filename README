@@ -1,0 +1,21 @@
+ruby script to modify locations table's region field.
+
+requires:
+  ruby 1.9.2
+  rubygems
+  mysql
+  
+$ cd path/to/app
+      
+If you don't already have a database with the sql loaded into it, create a database in mysql named mysql-test_development (if you want to use a different database name then change the database field in config/database.yml) and run the following command in bash:
+  
+  $ mysql -u username -p password mysql-test_development < data/import.sql 
+
+Then after installing ruby 1.9.2 and rubygems run the following commands in bash while in the app directory
+    
+    $ gem install bundler
+    $ bundle install
+    $ bundle exec ruby-test.rb
+    
+    follow the prompts and enjoy
+    
