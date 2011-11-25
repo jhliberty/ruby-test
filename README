@@ -12,7 +12,7 @@ Then after installing ruby 1.9.2 and rubygems run the following commands in bash
     $ cd path/to/app    
     $ gem install bundler
     $ bundle install
-    $ bundle exec ruby-test.rb
+    $ bundle exec update-city.rb
     
     follow the prompts and enjoy
     
