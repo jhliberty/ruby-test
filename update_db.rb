@@ -20,39 +20,36 @@ begin
   
   entry = Hash.new 
   entry[:state] = ask("State?  ") { |q| q.default = "none" }
-  entry[:dma]   = ask("City?  ") { |q| q.default = "none" }
-  entry[:updated_dma] = ask("Updated City Name?  ") { |q| q.default = "" }
+  entry[:region]   = ask("City?  ") { |q| q.default = "none" }
+  entry[:updated_region] = ask("Updated City Name?  ") { |q| q.default = "" }
   
   puts entry
+  @loc = Location.where(:state => entry[:state], :region => entry[:region])
+  
   
   choices = %w{yes no}
   say("Would you like to rename city? [yes] [no]")
   
   case ask("?  ", choices)
   when "yes"
-    @loc = Location.where(:state => entry[:state], :dma => entry[:dma])
+    @loc = Location.where(:state => entry[:state], :region => entry[:region])
     if @loc.count === 0
-      puts "no city found with name #{entry[:dma]}"
-      updates << "no city found with name #{entry[:dma]}"
-    elsif @loc.count === 1
-      @loc.update_attributes(:dma => entry[:updated_dma])
-      @loc = Location.where(:state => entry[:state], :dma => entry[:updated_dma])
-      puts "1 Location updated with #{@loc.state} and #{@loc.dma}"
-      updates << "1 Location updated with #{@loc.state} and #{@loc.dma}"
+      puts "no city found with name #{entry[:region]}"
+      updates << "no city found with name #{entry[:region]}"
     else
-      @loc.update_all(:dma => entry[:updated_dma])
-      @loc = Location.where(:state => entry[:state], :dma => entry[:updated_dma])
-      puts "#{@loc.count} records with state: #{@loc.state} have had their dma changed to #{@loc.dma}"
-      updates << "#{@loc.count} records with state: #{@loc.state} have had their dma changed to #{@loc.dma}"
+      @loc.update_all(:region => entry[:updated_region])
+      @loc = Location.where(:state => entry[:state], :region => entry[:updated_region])
+      puts "#{@loc.count} records with state: #{entry[:state]} have had their region changed to #{entry[:updated_region]}"
+      updates << "#{@loc.count} records with state: #{entry[:state]} have had their region changed to #{entry[:updated_region]}"
     end
   else
-    @loc = Location.where(:state => entry[:state], :dma => entry[:dma])
+    @loc = Location.where(:state => entry[:state], :region => entry[:region])
     if @loc.empty?
-      puts "No location found with #{entry[:state]} and #{entry[:dma]}"
-      updates << "No location found with #{entry[:state]} and #{entry[:dma]}"
+      puts "No location found with #{entry[:state]} and #{entry[:region]}"
+      updates << "No location found with #{entry[:state]} and #{entry[:region]}"
     else
-      puts "#{@loc.count} records found, but not updated with #{entry[:state]} and #{entry[:dma]}"
-      updates << "#{@loc.count} records found, but not updated with #{entry[:state]} and #{entry[:dma]}"
+      puts "#{@loc.count} records found, but not updated with #{entry[:state]} and #{entry[:region]}"
+      updates << "#{@loc.count} records found, but not updated with #{entry[:state]} and #{entry[:region]}"
     end
   end
 end while agree("Enter another update?  ", true)
